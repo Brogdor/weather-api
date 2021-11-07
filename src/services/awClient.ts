@@ -1,4 +1,6 @@
 import * as _ from 'lodash';
+import dayjs from 'dayjs';
+
 import AmbientWeatherApi from 'ambient-weather-api';
 
 if (!process.env.API_KEY) {
@@ -19,18 +21,19 @@ const api = new AmbientWeatherApi({
 });
 
 export function fetchCurrentWeather() {
-    return fetchRecentWeather()
+    return fetchWeather(dayjs().valueOf())
     .then((deviceData) => {
         return _.first(deviceData);
     });
 }
 
-export function fetchRecentWeather(limit: number = 1): Promise<WeatherData[]> {
+export function fetchWeather(endDate: any, limit: string = '1'): Promise<WeatherData[]> {
     if (!process.env.MAC_ADDRESS) {
         throw new Error('Missing MAC_ADDRESS in .env');
     }
 
     return api.deviceData(process.env.MAC_ADDRESS, {
-        limit
+        endDate,
+        limit: parseInt(limit)
     });
 }

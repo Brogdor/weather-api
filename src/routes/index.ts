@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getAllUsers, addOneUser, updateOneUser, deleteOneUser } from './Users';
-import { getCurrentWeather } from './Weather';
+import { getCurrentWeather, getHistoricalWeather } from './Weather';
 
 // User-route
 const userRouter = Router();
@@ -11,6 +11,9 @@ userRouter.delete('/delete/:id', deleteOneUser);
 
 const weatherRouter = Router();
 weatherRouter.get('/current', getCurrentWeather);
+weatherRouter.get('/timestamp/:endDate', getHistoricalWeather);
+weatherRouter.get('/timestamp/:endDate/limit/:limit', getHistoricalWeather);
+
 
 // Export the base-router
 const baseRouter = Router();
